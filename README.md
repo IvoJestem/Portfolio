@@ -27,6 +27,7 @@ Live Demo: [https://ivojestem.github.io/Portfolio/](https://ivojestem.github.io/
 
 ## Project Structure
 
+```text
 Portfolio/
 ├── .github/
 │   └── workflows/
@@ -48,8 +49,7 @@ Portfolio/
 ├── vite.config.ts            # Base path & build configuration
 ├── package.json
 └── README.md
-
----
+```
 
 ## Getting Started
 
