@@ -62,10 +62,10 @@ export const aboutData: AboutData = {
   },
   trustedBy: [
     'ZAGŁĘBIE SOSNOWIEC',
-    'CZARNI SOSNOWIEC',
-    'ACADEMY FOOTBALL',
+    'FREAK PARK',
+    'LOOPZ PARKL',
     'PRO ATHLETES',
-    'STREETWEAR BRANDS'
+    'HUDERLOK'
   ],
   services: [
     {
