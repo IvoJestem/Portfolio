@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import HomeTab from './components/HomeTab';
 import WorkTab from './components/WorkTab';
 import AboutTab from './components/AboutTab';
@@ -9,61 +10,121 @@ type Tab = 'home' | 'work' | 'about' | 'contact';
 export default function App() {
   const [activeTab, setActiveTab] = useState<Tab>('home');
 
+  // Konfiguracja płynnej animacji (subtelny fade + wjazd z dołu)
+  const pageVariants = {
+    initial: { opacity: 0, y: 15 },
+    animate: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: -15 },
+  };
+
+const pageTransition = {
+    duration: 0.5,
+    ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+  };
+
   return (
-    <div className="min-h-screen bg-[#070708] text-zinc-100 font-sans selection:bg-red-600 selection:text-white flex flex-col justify-between p-6 sm:p-10 relative">
+    <div className="min-h-screen bg-[#050505] text-zinc-100 font-sans selection:bg-white selection:text-black flex flex-col relative overflow-hidden">
       
-      {/* Header */}
-      <header className="flex items-center justify-between text-xs tracking-wider z-20">
-        <div className="flex items-center gap-12">
+      {/* NAVBAR */}
+      <header className="px-8 py-8 flex items-center justify-between text-[10px] tracking-widest uppercase font-mono z-20">
+        <div className="flex items-center gap-20">
           <button 
             onClick={() => setActiveTab('home')}
-            className="font-black text-xl tracking-tighter uppercase text-white cursor-pointer focus:outline-none"
+            className="font-black text-2xl tracking-tighter text-white cursor-pointer focus:outline-none"
           >
-            SM<span className="text-red-600">.</span>
+            SM<span className="text-zinc-500">.</span>
           </button>
 
-          <nav className="flex items-center gap-6 sm:gap-8 font-mono text-[11px] text-zinc-400">
+          <nav className="flex items-center gap-10 text-zinc-500">
             {(['home', 'work', 'about', 'contact'] as Tab[]).map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`uppercase tracking-widest transition pb-1 focus:outline-none ${
-                  activeTab === tab
-                    ? 'text-white border-b-2 border-red-600'
-                    : 'hover:text-zinc-200'
+                className={`relative pb-2 transition hover:text-zinc-300 focus:outline-none ${
+                  activeTab === tab ? 'text-white' : ''
                 }`}
               >
+                {activeTab === tab && (
+                  <span className="absolute -top-4 left-0 w-full h-[1px] bg-white"></span>
+                )}
                 {tab}
               </button>
             ))}
           </nav>
         </div>
 
-        <div className="text-right font-mono text-[10px] text-zinc-500 uppercase tracking-widest hidden md:block">
-          SPORTS VIDEOGRAPHER <br />
-          <span className="text-zinc-300">&amp; SOCIAL MEDIA CREATOR</span>
+        <div className="hidden md:flex items-center gap-6 text-zinc-400 text-right">
+          <p className="leading-relaxed">
+            SPORTS VIDEOGRAPHER <br />
+            <span className="text-zinc-200">&amp; SOCIAL MEDIA CREATOR</span>
+          </p>
+          <div className="w-16 h-[1px] bg-zinc-700"></div>
         </div>
       </header>
 
-      {/* Main Container - wklejone właściwe komponenty */}
-      <main className="my-auto py-10 z-10 max-w-7xl mx-auto w-full">
-        {activeTab === 'home' && <HomeTab onGoToWork={() => setActiveTab('work')} />}
-        {activeTab === 'work' && <WorkTab />}
-        {activeTab === 'about' && <AboutTab onGoToContact={() => setActiveTab('contact')} />}
-        {activeTab === 'contact' && <ContactTab />}
-      </main>
+      {/* MAIN CONTENT Z ANIMACJAMI */}
+      <main className="flex-1 w-full px-8 pb-12 z-10 flex flex-col justify-center">
+        {/* mode="wait" sprawia, że nowa zakładka czeka, aż stara całkowicie zniknie */}
+        <AnimatePresence mode="wait">
+          
+          {activeTab === 'home' && (
+            <motion.div
+              key="home"
+              variants={pageVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              transition={pageTransition}
+              className="w-full h-full"
+            >
+              <HomeTab onGoToWork={() => setActiveTab('work')} />
+            </motion.div>
+          )}
 
-      {/* Footer */}
-      <footer className="flex flex-col sm:flex-row justify-between items-center text-[10px] font-mono text-zinc-500 gap-4 pt-6 border-t border-zinc-900 z-20">
-        <div className="flex gap-6 uppercase tracking-wider">
-          <a href="https://www.instagram.com/siewniakfilms/" target="_blank" rel="noreferrer" className="hover:text-white transition">Instagram</a>
-          <a href="https://tiktok.com" target="_blank" rel="noreferrer" className="hover:text-white transition">TikTok</a>
-          <a href="https://youtube.com" target="_blank" rel="noreferrer" className="hover:text-white transition">YouTube</a>
-        </div>
-        <div className="uppercase tracking-widest">
-          KATOWICE / SOSNOWIEC / ŚLĄSK © 2026
-        </div>
-      </footer>
+          {activeTab === 'work' && (
+            <motion.div
+              key="work"
+              variants={pageVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              transition={pageTransition}
+              className="w-full h-full"
+            >
+              <WorkTab />
+            </motion.div>
+          )}
+
+          {activeTab === 'about' && (
+            <motion.div
+              key="about"
+              variants={pageVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              transition={pageTransition}
+              className="w-full h-full"
+            >
+              <AboutTab onGoToContact={() => setActiveTab('contact')} />
+            </motion.div>
+          )}
+
+          {activeTab === 'contact' && (
+            <motion.div
+              key="contact"
+              variants={pageVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              transition={pageTransition}
+              className="w-full h-full"
+            >
+              <ContactTab />
+            </motion.div>
+          )}
+
+        </AnimatePresence>
+      </main>
 
     </div>
   );

@@ -1,248 +1,122 @@
-import React, { useState } from 'react';
-
-interface WorkItem {
-  id: string;
-  category: 'BASKETBALL' | 'HOCKEY' | 'EVENT' | 'SOCIAL MEDIA';
-  categoryLabel: string;
-  title: string;
-  subtitle: string;
-  duration: string;
-  imageSrc: string;
-  videoSrc?: string;
-  igUrl: string;
-  colSpanTop?: string; // dla rzędu górnego
-  colSpanBottom?: string; // dla rzędu dolnego
-}
-
-const workItems: WorkItem[] = [
-  // Górny rząd (3 duże karty)
-  {
-    id: '1',
-    category: 'BASKETBALL',
-    categoryLabel: 'BASKETBALL',
-    title: 'BEHIND THE SCENES',
-    subtitle: 'MATCHDAY',
-    duration: '01:32',
-    imageSrc: 'img/kosz2.jpg',
-    videoSrc: 'videos/film2.mp4',
-    igUrl: 'https://www.instagram.com/reel/Dc5y5BxOLOe/'
-  },
-  {
-    id: '2',
-    category: 'BASKETBALL',
-    categoryLabel: 'BASKETBALL',
-    title: 'GAME DAY',
-    subtitle: 'HIGHLIGHTS',
-    duration: '00:58',
-    imageSrc: 'img/kosz1.jpg',
-    videoSrc: 'videos/film2.mp4',
-    igUrl: 'https://www.instagram.com/reel/Dc5y5BxOLOe/'
-  },
-  {
-    id: '3',
-    category: 'HOCKEY',
-    categoryLabel: 'HOCKEY / ON ICE',
-    title: 'DISCIPLINE',
-    subtitle: 'GAME SPEED',
-    duration: '01:15',
-    imageSrc: 'img/hero.jpg',
-    videoSrc: 'videos/film1.mp4',
-    igUrl: 'https://www.instagram.com/reel/Dcs_4bTlfU8/'
-  },
-  // Dolny rząd (4 zróżnicowane karty)
-  {
-    id: '4',
-    category: 'EVENT',
-    categoryLabel: 'EVENT / PLENER',
-    title: 'THE JOURNEY',
-    subtitle: 'RELACJA Z ZAMKU',
-    duration: '02:24',
-    imageSrc: 'img/hero.jpg',
-    videoSrc: 'videos/film1.mp4',
-    igUrl: 'https://www.instagram.com/reel/Dcs_4bTlfU8/'
-  },
-  {
-    id: '5',
-    category: 'BASKETBALL',
-    categoryLabel: 'BASKETBALL',
-    title: 'DETAILS',
-    subtitle: 'BTS & EMOCJE',
-    duration: '00:47',
-    imageSrc: 'img/kosz1.jpg',
-    videoSrc: 'videos/film2.mp4',
-    igUrl: 'https://www.instagram.com/reel/Dc5y5BxOLOe/'
-  },
-  {
-    id: '6',
-    category: 'HOCKEY',
-    categoryLabel: 'HOCKEY',
-    title: 'ULTRAS',
-    subtitle: 'ATMOSPHERE',
-    duration: '01:08',
-    imageSrc: 'img/kosz2.jpg',
-    videoSrc: 'videos/film1.mp4',
-    igUrl: 'https://www.instagram.com/reel/Dcs_4bTlfU8/'
-  },
-  {
-    id: '7',
-    category: 'SOCIAL MEDIA',
-    categoryLabel: 'SOCIAL MEDIA',
-    title: 'SHORTS',
-    subtitle: 'VERTICAL CONTENT',
-    duration: '00:36',
-    imageSrc: 'img/kosz2.jpg',
-    videoSrc: 'videos/film3.mp4',
-    igUrl: 'https://www.instagram.com/siewniakfilms/'
-  }
-];
-
-const categories = [
-  { key: 'ALL', label: 'ALL' },
-  { key: 'BASKETBALL', label: 'BASKETBALL' },
-  { key: 'HOCKEY', label: 'HOCKEY' },
-  { key: 'EVENT', label: 'EVENT' },
-  { key: 'SOCIAL MEDIA', label: 'SOCIAL MEDIA' },
-];
+import { useState } from 'react';
+import { projects, type Project } from '../data/projects';
 
 export default function WorkTab() {
   const [activeFilter, setActiveFilter] = useState('ALL');
 
-  const filteredItems = activeFilter === 'ALL'
-    ? workItems
-    : workItems.filter(item => item.category === activeFilter);
+  // Automatycznie generujemy filtry na podstawie danych z projects.ts
+  // Ponieważ Twoje kategorie to np. "VIDEO PRODUCTION / SOCIAL MEDIA CONTENT",
+  // wyciągamy tylko pierwsze słowo jako główną kategorię do filtra.
+  const categoryCounts = projects.reduce((acc, project) => {
+    const mainCategory = project.category.split(' / ')[0];
+    acc['ALL'] = (acc['ALL'] || 0) + 1;
+    acc[mainCategory] = (acc[mainCategory] || 0) + 1;
+    return acc;
+  }, {} as Record<string, number>);
 
-  // Podział na rząd górny (pierwsze 3) i dolny (pozostałe 4) przy filtrze ALL
-  const topRow = activeFilter === 'ALL' ? filteredItems.slice(0, 3) : filteredItems;
-  const bottomRow = activeFilter === 'ALL' ? filteredItems.slice(3) : [];
+  const categories = Object.keys(categoryCounts).map(key => ({
+    key, count: categoryCounts[key]
+  }));
+
+  // Filtrujemy projekty przed wyświetleniem
+  const filteredProjects = activeFilter === 'ALL' 
+    ? projects 
+    : projects.filter(p => p.category.split(' / ')[0] === activeFilter);
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start animate-fadeIn">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start animate-fadeIn max-w-[1600px] mx-auto w-full">
       
-      {/* LEWA KOLUMNA: Tytuł i Filtry */}
-      <div className="lg:col-span-3 flex flex-col justify-between self-stretch space-y-12 pr-4">
-        <div className="space-y-8">
-          <div>
-            <span className="text-xs font-mono text-zinc-600 uppercase tracking-widest block mb-2">
+      {/* LEWA KOLUMNA: Nawigacja i filtry */}
+      <div className="lg:col-span-3 flex flex-col justify-between h-full">
+        <div className="space-y-12">
+          <div className="space-y-4">
+            <span className="text-xs font-mono text-zinc-500 uppercase tracking-widest block">
               / 02
             </span>
-            <h1 className="text-5xl sm:text-6xl font-black uppercase tracking-tight text-white leading-none">
+            <h1 className="text-6xl font-black uppercase tracking-tighter text-white leading-none">
               WORK
             </h1>
-            <p className="text-[11px] font-mono text-zinc-500 uppercase tracking-wider mt-3">
-              SPORTS VIDEOS. SOCIAL CONTENT.<br />REAL STORIES.
+            <p className="text-[10px] font-mono text-zinc-400 uppercase tracking-widest leading-relaxed">
+              SPORTS VIDEOS. SOCIAL CONTENT. <br /> REAL STORIES.
             </p>
           </div>
 
-          {/* Filtry z licznikami */}
-          <nav className="space-y-2.5 font-mono text-xs pt-4">
+          <nav className="space-y-4 font-mono text-[10px] uppercase tracking-widest pt-8">
             {categories.map((cat) => {
-              const count = cat.key === 'ALL' 
-                ? workItems.length 
-                : workItems.filter(i => i.category === cat.key).length;
-
-              const isSelected = activeFilter === cat.key;
-
+              const isActive = activeFilter === cat.key;
               return (
                 <button
                   key={cat.key}
                   onClick={() => setActiveFilter(cat.key)}
-                  className={`flex items-center justify-between w-full py-1 text-left transition ${
-                    isSelected ? 'text-white font-bold' : 'text-zinc-500 hover:text-zinc-300'
+                  className={`flex items-center justify-between w-full text-left transition relative ${
+                    isActive ? 'text-white font-bold' : 'text-zinc-500 hover:text-zinc-300'
                   }`}
                 >
-                  <span className="flex items-center gap-2">
-                    {isSelected && <span className="text-white">—</span>}
-                    {cat.label}
-                  </span>
-                  <span className="text-[11px] text-zinc-600">{count}</span>
+                  <div className="flex items-center">
+                    {/* Wystająca linia dla aktywnego elementu (1:1 makieta) */}
+                    {isActive && <span className="absolute -left-8 w-6 h-[1px] bg-white"></span>}
+                    <span>{cat.key}</span>
+                  </div>
+                  <span>{cat.count}</span>
                 </button>
               );
             })}
           </nav>
         </div>
 
-        {/* Wskaźnik scrolla na dole lewej kolumny */}
-        <div className="hidden lg:flex flex-col gap-2 font-mono text-[10px] text-zinc-600 uppercase tracking-widest pt-8">
-          <span>SCROLL TO EXPLORE</span>
-          <span className="text-sm">↓</span>
+        <div className="font-mono text-[10px] text-zinc-600 uppercase tracking-widest pt-32 space-y-4 hidden lg:block">
+          <p>SCROLL TO EXPLORE</p>
+          <div className="w-[1px] h-8 bg-zinc-800 ml-1"></div>
+          <p className="text-white ml-0.5">↓</p>
         </div>
       </div>
 
-      {/* PRAWA KOLUMNA: Siatka projektów */}
-      <div className="lg:col-span-9 space-y-6">
-        
-        {/* Rząd 1: 3 kolumny */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {topRow.map((item) => (
-            <WorkCard key={item.id} item={item} aspect="aspect-[4/5]" />
-          ))}
+      {/* PRAWA KOLUMNA: Asymetryczny Grid (Bento) */}
+      <div className="lg:col-span-9">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 auto-rows-[180px]">
+          {filteredProjects.map((p, index) => {
+            // Asymetryczny bento grid: pozycje dostają różne szerokości w zależności od indeksu
+            const spanClass = index === 0 ? "md:col-span-6 row-span-2" : 
+                              index === 1 || index === 2 ? "md:col-span-3 row-span-2" :
+                              index === 3 ? "md:col-span-5 row-span-2" :
+                              index === 4 ? "md:col-span-3 row-span-2" : "md:col-span-2 row-span-2";
+            
+            return (
+              <WorkCard 
+                key={p.id} 
+                className={spanClass} 
+                project={p} 
+              />
+            );
+          })}
         </div>
-
-        {/* Rząd 2: 4 karty o układzie asymetrycznym (np. pierwsza szersza) */}
-        {bottomRow.length > 0 && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-5 pt-2">
-            {bottomRow.map((item, index) => {
-              // Pierwsza karta w rzędzie zajmuje 4 kolumny, reszta po 2-3
-              const colSpan = index === 0 ? 'md:col-span-4' : 'md:col-span-3 md:last:col-span-2';
-              return (
-                <div key={item.id} className={colSpan}>
-                  <WorkCard item={item} aspect="aspect-[4/5]" />
-                </div>
-              );
-            })}
-          </div>
-        )}
-
       </div>
-
     </div>
   );
 }
 
-// Pojedyncza karta projektu ze zrzutu ekranu
-function WorkCard({ item, aspect }: { item: WorkItem; aspect: string }) {
+// Subkomponent karty przesyłający dalej dane z Project
+function WorkCard({ className, project }: { className: string, project: Project }) {
+  // Wyciągamy pierwsze słowo z długiej kategorii by służyło jako tag na obrazku
+  const shortTag = project.category.split(' / ')[0];
+
   return (
-    <a
-      href={item.igUrl}
-      target="_blank"
-      rel="noreferrer"
-      className="group relative flex flex-col justify-between overflow-hidden rounded-xl border border-zinc-800/80 bg-zinc-950 p-4 transition duration-500 hover:border-zinc-700"
-    >
-      {/* Zdjęcie / Tło wideo */}
-      <div className={`relative ${aspect} w-full overflow-hidden rounded-lg bg-zinc-900`}>
-        <img
-          src={item.imageSrc}
-          alt={item.title}
-          className="h-full w-full object-cover grayscale contrast-125 transition duration-700 ease-out group-hover:scale-105 group-hover:grayscale-0"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent pointer-events-none" />
+    <a href={project.igUrl} target="_blank" rel="noreferrer" className={`relative rounded border border-zinc-800/60 bg-[#0a0a0a] overflow-hidden group cursor-pointer block h-full ${className}`}>
+      <img src={project.posterSrc} alt={project.title} className="w-full h-full object-cover grayscale contrast-125 group-hover:scale-105 group-hover:grayscale-0 transition duration-700 ease-out" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent pointer-events-none" />
+      
+      <span className="absolute top-5 left-5 text-[9px] font-mono uppercase tracking-widest text-zinc-400">{shortTag}</span>
+      
+      <div className="absolute left-5 bottom-14 w-10 h-10 rounded-full border border-white/30 flex items-center justify-center bg-black/40 backdrop-blur-sm group-hover:scale-110 group-hover:bg-white group-hover:text-black transition duration-300">
+        <span className="text-[10px] pl-0.5">▶</span>
+      </div>
 
-        {/* Tag u góry */}
-        <div className="absolute top-3 left-3">
-          <span className="text-[10px] font-mono uppercase tracking-widest text-zinc-400">
-            {item.categoryLabel}
-          </span>
+      <div className="absolute bottom-5 left-5 right-5 flex justify-between items-end">
+        <div>
+          <h3 className="text-sm font-black uppercase tracking-tight text-white">{project.title}</h3>
+          <p className="text-[9px] font-mono text-zinc-400 uppercase tracking-widest mt-1">{project.subtitle}</p>
         </div>
-
-        {/* Ikona Play */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-black/40 backdrop-blur-sm transition duration-300 group-hover:scale-110 group-hover:bg-white group-hover:text-black">
-            <svg className="h-4 w-4 fill-current pl-0.5" viewBox="0 0 24 24">
-              <path d="M8 5v14l11-7z" />
-            </svg>
-          </div>
-        </div>
-
-        {/* Dolna belka informacyjna */}
-        <div className="absolute bottom-3 left-3 right-3 flex items-end justify-between font-mono text-[10px]">
-          <div>
-            <h3 className="font-sans text-xs font-black uppercase tracking-tight text-white">
-              {item.title}
-            </h3>
-            <p className="text-zinc-400 uppercase">{item.subtitle}</p>
-          </div>
-          <span className="text-zinc-500">{item.duration}</span>
-        </div>
+        <span className="text-[9px] font-mono text-zinc-500">{project.duration}</span>
       </div>
     </a>
   );
