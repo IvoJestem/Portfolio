@@ -1,200 +1,224 @@
-import React from 'react';
+import { aboutData } from '../data/projects';
 
 interface AboutTabProps {
-  onGoToContact?: () => void;
+  onGoToContact: () => void;
 }
 
 export default function AboutTab({ onGoToContact }: AboutTabProps) {
   return (
-    <div className="space-y-24 animate-fadeIn">
+    <div className="animate-fadeIn max-w-[1500px] mx-auto w-full space-y-24 py-4">
       
-      {/* 1. GÓRNA SEKCJA: THE CREATOR & SKILLS */}
-      <section className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      {/* GÓRNA SEKCJA */}
+      <section className="grid grid-cols-1 lg:grid-cols-12 gap-8 xl:gap-12 items-start">
         
-        {/* Lewa kolumna: Tytuł, bio i CTA */}
+        {/* Lewa kolumna: Tytuł i bio */}
         <div className="lg:col-span-4 space-y-8">
-          <div>
-            <span className="text-xs font-mono text-zinc-600 uppercase tracking-widest block mb-2">
-              / 03
-            </span>
-            <h1 className="text-5xl sm:text-6xl font-black uppercase tracking-tight text-white leading-[0.9]">
+          <div className="space-y-4">
+            <span className="text-xs font-mono text-zinc-500 uppercase tracking-widest block">/ 03</span>
+            <h1 className="text-5xl xl:text-6xl font-black uppercase tracking-tighter leading-[0.88] text-white">
               ABOUT <br />
-              <span className="text-zinc-500">THE CREATOR</span>
+              <span className="text-zinc-600">THE CREATOR</span>
             </h1>
-            <p className="text-[11px] font-mono text-zinc-400 uppercase tracking-wider mt-4">
-              SPORTS. STORIES. EMOTIONS.<br />
-              THAT&apos;S WHAT I CAPTURE.
+          </div>
+          
+          <div className="space-y-4">
+            <p className="text-[10px] font-mono text-zinc-400 uppercase tracking-widest leading-relaxed">
+              SPORTS. STORIES. EMOTIONS.<br /> THAT&apos;S WHAT I CAPTURE.
+            </p>
+            <p className="text-[11px] text-zinc-500 font-mono leading-relaxed max-w-[320px]">
+              {aboutData.bioText}
             </p>
           </div>
 
-          <p className="text-xs text-zinc-400 max-w-sm font-normal leading-relaxed">
-            Jestem twórcą wideo i koordynatorem social mediów z pasją do opowiadania autentycznych historii sportowych. Przekładam tempo z boiska i trybun na angażujący obraz — od meczowego potu po kulisy szatni.
-          </p>
-
-          <div className="pt-2 flex items-center gap-4">
-            <button
-              onClick={onGoToContact}
-              className="w-12 h-12 rounded-full border border-zinc-700 flex items-center justify-center hover:bg-white hover:text-black transition duration-300 group"
+          <div className="pt-4 flex items-center gap-5">
+            <button 
+              onClick={onGoToContact} 
+              className="w-12 h-12 rounded-full border border-zinc-700 flex items-center justify-center hover:bg-white hover:text-black transition duration-300 group cursor-pointer"
             >
-              <span className="text-sm transition-transform group-hover:translate-x-0.5">→</span>
+              <span className="text-sm transition-transform group-hover:translate-x-1">→</span>
             </button>
-            <span className="text-[11px] font-mono tracking-widest uppercase text-zinc-300">
-              LET&apos;S WORK TOGETHER
-            </span>
+            <span className="text-[10px] font-mono uppercase tracking-widest text-zinc-400">LET&apos;S WORK TOGETHER</span>
           </div>
         </div>
 
-        {/* Środkowa kolumna: Zdjęcie twórcy z kamerą */}
-        <div className="lg:col-span-4 flex justify-center">
-          <div className="relative aspect-[3/4] w-full max-w-[340px] rounded-2xl overflow-hidden border border-zinc-800/80 bg-zinc-950 shadow-2xl">
-            <img
-              src="img/hero.jpg"
-              alt="Hudy - Twórca Siewniak Media"
-              className="w-full h-full object-cover grayscale contrast-125 hover:grayscale-0 transition duration-700"
+        {/* Środkowa kolumna: Zdjęcie (ze sztywną maksymalną wysokością) */}
+        <div className="lg:col-span-3 flex justify-center">
+          <div className="relative w-full max-w-[300px] h-[460px] border border-zinc-800 bg-[#0a0a0a] rounded-sm overflow-hidden flex flex-col justify-between">
+            <img 
+              src={aboutData.heroImage} 
+              alt="Creator" 
+              className="absolute inset-0 w-full h-full object-cover grayscale contrast-125" 
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-black/20 pointer-events-none" />
-
-            {/* Subtelne hasła wtopione w kadr */}
-            <div className="absolute bottom-6 left-6 font-mono text-[9px] text-zinc-400 uppercase tracking-widest space-y-1">
-              <p className="text-white font-bold">BETTER CONTENT</p>
-              <p>BIGGER DREAMS</p>
-              <p className="text-red-500 font-bold pt-2">SM.</p>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-black/20 pointer-events-none" />
+            
+            <div className="relative z-10 p-6 flex flex-col justify-end h-full font-mono text-[9px] text-zinc-400 uppercase tracking-widest space-y-1">
+              <p>BETTER</p>
+              <p>CONTENT</p>
+              <p>BIGGER</p>
+              <p>DREAMS</p>
+              <p className="text-white font-black text-sm pt-3">SM.</p>
             </div>
           </div>
         </div>
 
-        {/* Prawa kolumna: Szczegółowy opis, ikony, skille i statystyki */}
-        <div className="lg:col-span-4 space-y-8">
+        {/* Prawa kolumna: Tekst + Statystyki */}
+        <div className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-12 gap-6 pl-0 xl:pl-4">
           
-          {/* Kto jestem + Statystyki w poziomie/pionie */}
-          <div className="grid grid-cols-1 sm:grid-cols-12 gap-6">
-            <div className="sm:col-span-8 space-y-4">
-              <span className="text-[10px] font-mono uppercase tracking-widest text-zinc-500 block border-b border-zinc-800 pb-1">
-                WHO I AM
-              </span>
-              <h2 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-white">
+          <div className="sm:col-span-8 space-y-6">
+            <div className="space-y-3">
+              <span className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest block border-b border-zinc-800 pb-2">WHO I AM</span>
+              <h2 className="text-2xl xl:text-3xl font-black uppercase tracking-tight text-white leading-tight">
                 I&apos;M A CREATOR <br />AT HEART
               </h2>
-              <p className="text-xs text-zinc-400 leading-relaxed">
-                Zawsze ciągnęło mnie do energii i nieprzewidywalności sportu. Chwytam za kamerę, żeby łączyć sportową pasję z dynamicznymi formatami social media.
+              <p className="text-[11px] font-mono text-zinc-500 leading-relaxed pt-1">
+                Zawsze ciągnęło mnie do sportu — tej nieznanej energii i pasji. Połączyłem to z aparatem i teraz tworzę materiały, które pomagają sportowcom, drużynom i markom opowiadać ich historię poprzez angażujące formaty social media.
               </p>
             </div>
 
-            {/* Liczniki po prawej */}
-            <div className="sm:col-span-4 space-y-5 font-mono border-l border-zinc-800 pl-4">
-              <div>
-                <span className="text-2xl font-black text-white block">3+</span>
-                <span className="text-[9px] uppercase tracking-wider text-zinc-500">Lata doświadczenia</span>
+            {/* Ikony */}
+            <div className="grid grid-cols-3 gap-3 pt-2">
+              <div className="space-y-2">
+                <div className="w-8 h-8 rounded border border-zinc-800 flex items-center justify-center text-zinc-400">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <rect x="3" y="7" width="18" height="12" rx="2" strokeWidth="1.5" />
+                    <circle cx="12" cy="13" r="3" strokeWidth="1.5" />
+                    <path d="M7 7V5h10v2" strokeWidth="1.5" strokeLinecap="square" />
+                  </svg>
+                </div>
+                <h4 className="text-[9px] font-bold uppercase text-white tracking-widest">VIDEO</h4>
+                <p className="text-[8px] font-mono text-zinc-600 uppercase">CINEMATIC</p>
               </div>
-              <div>
-                <span className="text-2xl font-black text-white block">50+</span>
-                <span className="text-[9px] uppercase tracking-wider text-zinc-500">Zrealizowanych projektów</span>
+
+              <div className="space-y-2">
+                <div className="w-8 h-8 rounded border border-zinc-800 flex items-center justify-center text-zinc-400">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <rect x="7" y="3" width="10" height="18" rx="2" strokeWidth="1.5" />
+                    <path d="M12 17h.01" strokeWidth="2" strokeLinecap="round" />
+                  </svg>
+                </div>
+                <h4 className="text-[9px] font-bold uppercase text-white tracking-widest">SOCIALS</h4>
+                <p className="text-[8px] font-mono text-zinc-600 uppercase">REELS</p>
               </div>
-              <div>
-                <span className="text-2xl font-black text-white block">200K+</span>
-                <span className="text-[9px] uppercase tracking-wider text-zinc-500">Wyświetleń rolek</span>
+
+              <div className="space-y-2">
+                <div className="w-8 h-8 rounded border border-zinc-800 flex items-center justify-center text-zinc-400">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <polygon points="9 6 18 12 9 18" strokeWidth="1.5" strokeLinejoin="round" />
+                  </svg>
+                </div>
+                <h4 className="text-[9px] font-bold uppercase text-white tracking-widest">STORY</h4>
+                <p className="text-[8px] font-mono text-zinc-600 uppercase">EMOTIONS</p>
               </div>
             </div>
           </div>
 
-          {/* 3 Kluczowe Filary (Ikony) */}
-          <div className="grid grid-cols-3 gap-3 border-t border-zinc-800 pt-6">
-            <div className="space-y-1">
-              <span className="text-base block">📹</span>
-              <h4 className="text-[10px] font-mono font-bold uppercase text-white tracking-wider">VIDEOGRAPHY</h4>
-              <p className="text-[9px] font-mono text-zinc-500 uppercase">CINEMATIC &amp; RAW</p>
+          {/* Kolumna ze statystykami */}
+          <div className="sm:col-span-4 border-l border-zinc-800/80 pl-6 space-y-8 text-right font-mono">
+            <div>
+              <span className="text-3xl font-black text-white block">{aboutData.stats.years}</span>
+              <span className="text-[9px] uppercase tracking-widest text-zinc-600">YEARS<br/>EXPERIENCE</span>
             </div>
-            <div className="space-y-1">
-              <span className="text-base block">📱</span>
-              <h4 className="text-[10px] font-mono font-bold uppercase text-white tracking-wider">SOCIAL MEDIA</h4>
-              <p className="text-[9px] font-mono text-zinc-500 uppercase">SHORT FORM &amp; REELS</p>
+            <div>
+              <span className="text-3xl font-black text-white block">{aboutData.stats.projects}</span>
+              <span className="text-[9px] uppercase tracking-widest text-zinc-600">PROJECTS<br/>COMPLETED</span>
             </div>
-            <div className="space-y-1">
-              <span className="text-base block">⚡</span>
-              <h4 className="text-[10px] font-mono font-bold uppercase text-white tracking-wider">STORYTELLING</h4>
-              <p className="text-[9px] font-mono text-zinc-500 uppercase">REAL EMOTIONS</p>
-            </div>
-          </div>
-
-          {/* Siatka Skills & Tools */}
-          <div className="space-y-3 border-t border-zinc-800 pt-6 font-mono">
-            <span className="text-[10px] uppercase tracking-widest text-zinc-500 block">
-              SKILLS &amp; TOOLS
-            </span>
-            <div className="grid grid-cols-2 gap-y-3 gap-x-4 text-[10px]">
-              <div>
-                <span className="text-zinc-200 font-bold block uppercase">VIDEO EDITING</span>
-                <span className="text-zinc-500">(PREMIERE PRO / CAPCUT)</span>
-              </div>
-              <div>
-                <span className="text-zinc-200 font-bold block uppercase">CAMERA GEAR</span>
-                <span className="text-zinc-500">(SONY / DJI GIMBAL)</span>
-              </div>
-              <div>
-                <span className="text-zinc-200 font-bold block uppercase">COLOR GRADING</span>
-                <span className="text-zinc-500">(DAVINCI RESOLVE / LUTs)</span>
-              </div>
-              <div>
-                <span className="text-zinc-200 font-bold block uppercase">DISTRIBUTION</span>
-                <span className="text-zinc-500">(TIKTOK / INSTAGRAM REELS)</span>
-              </div>
+            <div>
+              <span className="text-3xl font-black text-white block">{aboutData.stats.views}</span>
+              <span className="text-[9px] uppercase tracking-widest text-zinc-600">TOTAL VIEWS<br/>ONLINE</span>
             </div>
           </div>
 
         </div>
       </section>
 
-      {/* 2. DOLNA SEKCJA: PHILOSOPHY */}
-      <section className="border-t border-zinc-800/80 pt-16">
+      {/* SEKCJA: SERVICES & PACKAGES */}
+      <section className="pt-10 border-t border-zinc-900">
         <div className="flex items-center justify-between mb-8">
-          <span className="text-[10px] font-mono uppercase tracking-widest text-zinc-500">
-            MY PHILOSOPHY
-          </span>
-          <span className="text-[10px] font-mono text-red-500 uppercase tracking-widest">
-            AUTHENTIC SPORTS MEDIA
-          </span>
+          <div className="flex items-center gap-6 text-[10px] font-mono text-zinc-500 uppercase tracking-widest">
+            <span>OFFERING & SERVICES</span>
+            <div className="w-16 h-[1px] bg-zinc-800"></div>
+          </div>
+          <span className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest">PACKAGES / 2026</span>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          {/* Lewy kadr ze stadionu / trybun z cytatem */}
-          <div className="lg:col-span-7 relative aspect-[16/9] rounded-2xl overflow-hidden border border-zinc-800/80 bg-zinc-950 group">
-            <img
-              src="img/kosz2.jpg"
-              alt="Trybuny i emocje"
-              className="w-full h-full object-cover grayscale contrast-125 group-hover:scale-105 transition duration-700"
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {aboutData.services.map((srv) => (
+            <div key={srv.num} className="border border-zinc-800/60 bg-[#080808] p-6 xl:p-8 space-y-6 rounded-sm flex flex-col justify-between">
+              <div className="space-y-3">
+                <span className="text-xs font-mono text-zinc-600 uppercase block">/ {srv.num}</span>
+                <h3 className="text-lg xl:text-xl font-black uppercase text-white tracking-tight">{srv.title}</h3>
+                <p className="text-[11px] font-mono text-zinc-400 leading-relaxed">{srv.desc}</p>
+              </div>
+              <div className="pt-5 border-t border-zinc-900 space-y-1.5">
+                <span className="text-[9px] font-mono uppercase tracking-widest text-zinc-600 block">DELIVERABLES:</span>
+                {srv.deliverables.map((item, idx) => (
+                  <p key={idx} className="text-[10px] font-mono text-zinc-300 flex items-center gap-2">
+                    <span className="text-zinc-600">+</span> {item}
+                  </p>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* SEKCJA: TRUSTED BY */}
+      <section className="pt-10 border-t border-zinc-900">
+        <div className="flex items-center gap-6 mb-6 text-[10px] font-mono text-zinc-500 uppercase tracking-widest">
+          <span>COLLABORATIONS & TEAMS</span>
+          <div className="w-16 h-[1px] bg-zinc-800"></div>
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+          {aboutData.trustedBy.map((brand, idx) => (
+            <div
+              key={idx}
+              className="border border-zinc-900 p-5 flex items-center justify-center text-center font-mono text-[10px] tracking-widest text-zinc-500 uppercase hover:text-white hover:border-zinc-700 transition"
+            >
+              {brand}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* DOLNA SEKCJA: PHILOSOPHY */}
+      <section className="pt-10 border-t border-zinc-900">
+        <div className="flex items-center gap-6 mb-6 text-[10px] font-mono text-zinc-600 uppercase tracking-widest">
+          <span>MY PHILOSOPHY</span>
+          <div className="w-16 h-[1px] bg-zinc-800"></div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center min-h-[160px]">
+          <div className="lg:col-span-7 relative w-full h-44 border border-zinc-800/50 bg-[#0a0a0a] rounded-sm overflow-hidden group">
+            <img 
+              src={aboutData.philosophyImageLeft} 
+              alt="Stadium" 
+              className="w-full h-full object-cover grayscale contrast-125 group-hover:scale-105 group-hover:grayscale-0 transition duration-700" 
             />
-            <div className="absolute inset-0 bg-black/75 flex items-center p-8 sm:p-12">
-              <blockquote className="max-w-md space-y-2">
-                <p className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-white leading-tight">
-                  &ldquo;IT&apos;S NOT JUST ABOUT THE GAME. IT&apos;S ABOUT THE PEOPLE.&rdquo;
-                </p>
-                <cite className="text-[10px] font-mono text-red-500 uppercase tracking-widest not-italic block pt-2">
-                  — SIEWNIAK MEDIA MANIFESTO
-                </cite>
-              </blockquote>
+            <div className="absolute inset-0 bg-black/60 flex items-center p-8">
+              <h3 className="text-xl md:text-2xl font-black uppercase tracking-tight text-white leading-snug max-w-md">
+                &ldquo;IT&apos;S NOT JUST ABOUT THE GAME. IT&apos;S ABOUT THE PEOPLE.&rdquo;
+              </h3>
             </div>
           </div>
 
-          {/* Prawa strona: Krótki podpis i drugie ujęcie */}
-          <div className="lg:col-span-5 space-y-6">
-            <div className="space-y-4">
-              <p className="text-xs font-mono text-zinc-400 leading-relaxed">
-                Każdy mecz, każdy trening i każdy moment za kulisami to osobna opowieść. Wchodzę tam z kamerą, żeby pokazać to w sposób surowy, prawdziwy i kinowy.
-              </p>
-              <div className="font-serif italic text-2xl text-zinc-200 tracking-wider">
-                Hudy Siewniak
-              </div>
+          <div className="lg:col-span-3 px-2 space-y-4">
+            <p className="text-[10px] font-mono text-zinc-400 leading-relaxed">
+              {aboutData.philosophyText}
+            </p>
+            <div className="text-zinc-300 font-serif italic text-2xl tracking-widest">
+              Hudy.
             </div>
+          </div>
 
-            <div className="relative aspect-[16/7] rounded-xl overflow-hidden border border-zinc-800 bg-zinc-950">
-              <img
-                src="img/kosz1.jpg"
-                alt="Detal gry"
-                className="w-full h-full object-cover grayscale contrast-125 hover:grayscale-0 transition duration-500"
-              />
-              <div className="absolute bottom-2 right-3 font-mono text-[9px] text-zinc-400 uppercase tracking-widest bg-black/60 px-2 py-0.5 rounded">
-                DETAL / PARKITET
-              </div>
+          <div className="lg:col-span-2 relative w-full h-44 border border-zinc-800/50 rounded-sm overflow-hidden hidden lg:block">
+            <img 
+              src={aboutData.philosophyImageRight} 
+              alt="Detail" 
+              className="w-full h-full object-cover grayscale contrast-125" 
+            />
+            <div className="absolute bottom-3 right-3 text-right font-mono text-[8px] text-zinc-500 uppercase tracking-widest space-y-0.5">
+              <p>SPORTS</p><p>CONTENT</p>
             </div>
           </div>
         </div>
