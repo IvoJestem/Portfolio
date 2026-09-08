@@ -1,10 +1,13 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { projects, type Project } from '../data/projects';
 
-export default function WorkTab() {
+interface WorkTabProps {
+  onOpenProject: (p: Project) => void;
+}
+
+export default function WorkTab({ onOpenProject }: WorkTabProps) {
   const [activeFilter, setActiveFilter] = useState('ALL');
 
-  // Automatycznie generujemy filtry na podstawie danych z projects.ts
   const categoryCounts = projects.reduce((acc, project) => {
     const mainCategory = project.category.split(' / ')[0];
     acc['ALL'] = (acc['ALL'] || 0) + 1;
@@ -16,7 +19,6 @@ export default function WorkTab() {
     key, count: categoryCounts[key]
   }));
 
-  // Filtrujemy projekty przed wyświetleniem
   const filteredProjects = activeFilter === 'ALL' 
     ? projects 
     : projects.filter(p => p.category.split(' / ')[0] === activeFilter);
@@ -24,16 +26,12 @@ export default function WorkTab() {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start animate-fadeIn max-w-[1600px] mx-auto w-full">
       
-      {/* LEWA KOLUMNA: Nawigacja i filtry */}
+      {/* LEWA KOLUMNA */}
       <div className="lg:col-span-3 flex flex-col justify-between h-full">
         <div className="space-y-12">
           <div className="space-y-4">
-            <span className="text-xs font-mono text-zinc-500 uppercase tracking-widest block">
-              / 02
-            </span>
-            <h1 className="text-6xl font-black uppercase tracking-tighter text-white leading-none">
-              WORK
-            </h1>
+            <span className="text-xs font-mono text-zinc-500 uppercase tracking-widest block">/ 02</span>
+            <h1 className="text-6xl font-black uppercase tracking-tighter text-white leading-none">WORK</h1>
             <p className="text-[10px] font-mono text-zinc-400 uppercase tracking-widest leading-relaxed">
               SPORTS VIDEOS. SOCIAL CONTENT. <br /> REAL STORIES.
             </p>
@@ -46,12 +44,11 @@ export default function WorkTab() {
                 <button
                   key={cat.key}
                   onClick={() => setActiveFilter(cat.key)}
-                  className={`flex items-center justify-between w-full text-left transition relative ${
+                  className={`flex items-center justify-between w-full text-left transition relative cursor-pointer ${
                     isActive ? 'text-white font-bold' : 'text-zinc-500 hover:text-zinc-300'
                   }`}
                 >
                   <div className="flex items-center">
-                    {/* Wystająca linia dla aktywnego elementu (1:1 makieta) */}
                     {isActive && <span className="absolute -left-8 w-6 h-[1px] bg-white"></span>}
                     <span>{cat.key}</span>
                   </div>
@@ -69,11 +66,10 @@ export default function WorkTab() {
         </div>
       </div>
 
-      {/* PRAWA KOLUMNA: Asymetryczny Grid (Bento) */}
+      {/* PRAWA KOLUMNA: Bento Grid z podglądem wideo */}
       <div className="lg:col-span-9">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6 auto-rows-[180px]">
           {filteredProjects.map((p, index) => {
-            // Asymetryczny bento grid: pozycje dostają różne szerokości w zależności od indeksu
             const spanClass = index === 0 ? "md:col-span-6 row-span-2" : 
                               index === 1 || index === 2 ? "md:col-span-3 row-span-2" :
                               index === 3 ? "md:col-span-5 row-span-2" :
@@ -83,7 +79,8 @@ export default function WorkTab() {
               <WorkCard 
                 key={p.id} 
                 className={spanClass} 
-                project={p} 
+                project={p}
+                onOpen={() => onOpenProject(p)}
               />
             );
           })}
@@ -93,19 +90,49 @@ export default function WorkTab() {
   );
 }
 
-// Subkomponent karty z wektorową ikoną odtwarzania SVG zamiast symbolu tekstowego
-function WorkCard({ className, project }: { className: string, project: Project }) {
+function WorkCard({ className, project, onOpen }: { className: string; project: Project; onOpen: () => void }) {
   const shortTag = project.category.split(' / ')[0];
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  const handleMouseEnter = () => {
+    if (videoRef.current) {
+      videoRef.current.play().catch(() => {});
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.currentTime = 0;
+    }
+  };
 
   return (
-    <a href={project.igUrl} target="_blank" rel="noreferrer" className={`relative rounded border border-zinc-800/60 bg-[#0a0a0a] overflow-hidden group cursor-pointer block h-full ${className}`}>
-      <img src={project.posterSrc} alt={project.title} className="w-full h-full object-cover grayscale contrast-125 group-hover:scale-105 group-hover:grayscale-0 transition duration-700 ease-out" />
+    <div
+      onClick={onOpen}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      className={`relative rounded border border-zinc-800/60 bg-[#0a0a0a] overflow-hidden group cursor-pointer block h-full ${className}`}
+    >
+      <img
+        src={project.posterSrc}
+        alt={project.title}
+        className="w-full h-full object-cover grayscale contrast-125 group-hover:opacity-0 transition-opacity duration-500 ease-out"
+      />
+      <video
+        ref={videoRef}
+        src={project.videoSrc}
+        muted
+        loop
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+      />
+      
       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent pointer-events-none" />
       
       <span className="absolute top-5 left-5 text-[9px] font-mono uppercase tracking-widest text-zinc-400">{shortTag}</span>
       
       <div className="absolute left-5 bottom-14 w-10 h-10 rounded-full border border-white/30 flex items-center justify-center bg-black/40 backdrop-blur-sm group-hover:scale-110 group-hover:bg-white group-hover:text-black transition duration-300">
-        {/* Czysta, geometryczna ikona SVG */}
         <svg className="w-3 h-3 fill-current pl-0.5" viewBox="0 0 24 24">
           <polygon points="5 3 19 12 5 21 5 3" />
         </svg>
@@ -118,6 +145,6 @@ function WorkCard({ className, project }: { className: string, project: Project 
         </div>
         <span className="text-[9px] font-mono text-zinc-500">{project.duration}</span>
       </div>
-    </a>
+    </div>
   );
 }

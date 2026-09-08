@@ -1,4 +1,4 @@
-import { aboutData } from '../data/projects'; // Importujemy dane!
+import { aboutData } from '../data/projects';
 
 interface AboutTabProps {
   onGoToContact: () => void;
@@ -6,32 +6,25 @@ interface AboutTabProps {
 
 export default function AboutTab({ onGoToContact }: AboutTabProps) {
   return (
-    <div className="animate-fadeIn max-w-[1600px] mx-auto w-full space-y-20">
+    <div className="animate-fadeIn max-w-[1600px] mx-auto w-full space-y-24 py-6">
       
       {/* GÓRNA SEKCJA */}
       <section className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start h-full">
-        
-        {/* Lewa kolumna: Tytuł i krótki wstęp */}
         <div className="lg:col-span-3 space-y-8">
           <div className="space-y-6">
             <span className="text-xs font-mono text-zinc-500 uppercase tracking-widest block">/ 03</span>
             <h1 className="text-5xl lg:text-7xl font-black uppercase tracking-tighter leading-[0.85] text-white">
-              ABOUT <br />
-              <span className="text-zinc-600">THE CREATOR</span>
+              ABOUT <br /> <span className="text-zinc-600">THE CREATOR</span>
             </h1>
           </div>
-          
           <div className="space-y-4">
             <p className="text-[10px] font-mono text-zinc-400 uppercase tracking-widest leading-relaxed">
-              SPORTS. STORIES. EMOTIONS.<br />
-              THAT&apos;S WHAT I CAPTURE.
+              SPORTS. STORIES. EMOTIONS.<br /> THAT&apos;S WHAT I CAPTURE.
             </p>
-            {/* Dynamiczne Bio cz. 1 */}
             <p className="text-[11px] text-zinc-500 font-mono leading-relaxed max-w-[280px]">
               {aboutData.bioText}
             </p>
           </div>
-
           <div className="pt-8 flex items-center gap-6">
             <button onClick={onGoToContact} className="w-14 h-14 rounded-full border border-zinc-700 flex items-center justify-center hover:bg-white hover:text-black transition duration-300 group cursor-pointer">
               <span className="text-sm transition-transform group-hover:translate-x-1">→</span>
@@ -40,26 +33,18 @@ export default function AboutTab({ onGoToContact }: AboutTabProps) {
           </div>
         </div>
 
-        {/* Środkowa kolumna: Główne Zdjęcie profilowe (Dynamiczne) */}
         <div className="lg:col-span-4 flex justify-center">
           <div className="relative w-full max-w-[360px] aspect-[2/3] border border-zinc-800/50 bg-[#0a0a0a] rounded-sm overflow-hidden">
             <img src={aboutData.heroImage} alt="Creator" className="w-full h-full object-cover grayscale contrast-125" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
-            
-            {/* Napisy na dole zdjęcia */}
             <div className="absolute bottom-12 left-8 font-mono text-[9px] text-zinc-400 uppercase tracking-widest space-y-1.5">
-              <p>BETTER</p>
-              <p>CONTENT</p>
-              <p>BIGGER</p>
-              <p>DREAMS</p>
+              <p>BETTER</p><p>CONTENT</p><p>BIGGER</p><p>DREAMS</p>
               <p className="text-white font-black text-sm pt-4">SM.</p>
             </div>
           </div>
         </div>
 
-        {/* Prawa kolumna: Ikony, Bio cz. 2, Skills, Stats */}
         <div className="lg:col-span-5 flex flex-col h-full justify-between">
-          
           <div className="flex justify-between items-start">
             <div className="max-w-md space-y-6">
               <div className="space-y-4">
@@ -70,7 +55,6 @@ export default function AboutTab({ onGoToContact }: AboutTabProps) {
                 </p>
               </div>
 
-              {/* Ikony wektorowe (bez zmian) */}
               <div className="grid grid-cols-3 gap-4 pt-4">
                 <div className="space-y-2">
                   <div className="w-8 h-8 rounded border border-zinc-800 flex items-center justify-center text-zinc-400">
@@ -105,7 +89,6 @@ export default function AboutTab({ onGoToContact }: AboutTabProps) {
               </div>
             </div>
 
-            {/* Dynamiczne Statystyki */}
             <div className="pl-8 border-l border-zinc-800/80 space-y-8 text-right font-mono hidden sm:block">
               <div>
                 <span className="text-3xl font-black text-white block">{aboutData.stats.years}</span>
@@ -121,57 +104,67 @@ export default function AboutTab({ onGoToContact }: AboutTabProps) {
               </div>
             </div>
           </div>
+        </div>
+      </section>
 
-          {/* Skills Grid */}
-          <div className="pt-12">
-            <span className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest block border-b border-zinc-800 pb-2 mb-6">SKILLS & TOOLS</span>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 font-mono text-[9px] uppercase tracking-widest">
+      {/* NOWA SEKCJA: SERVICES & PACKAGES */}
+      <section className="pt-12 border-t border-zinc-900">
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center gap-6 text-[10px] font-mono text-zinc-500 uppercase tracking-widest">
+            <span>OFFERING & SERVICES</span>
+            <div className="w-16 h-[1px] bg-zinc-800"></div>
+          </div>
+          <span className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest">PACKAGES / 2026</span>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {aboutData.services.map((srv) => (
+            <div key={srv.num} className="border border-zinc-800/60 bg-[#080808] p-8 space-y-6 rounded-sm flex flex-col justify-between">
               <div className="space-y-4">
-                <div>
-                  <span className="text-white block font-bold mb-1">VIDEO EDITING</span>
-                  <span className="text-zinc-600">(PREMIERE PRO / CAPCUT)</span>
-                </div>
-                <div>
-                  <span className="text-white block font-bold mb-1">COLOR GRADING</span>
-                  <span className="text-zinc-600">(DAVINCI RESOLVE)</span>
-                </div>
+                <span className="text-xs font-mono text-zinc-600 uppercase block">/ {srv.num}</span>
+                <h3 className="text-xl font-black uppercase text-white tracking-tight">{srv.title}</h3>
+                <p className="text-[11px] font-mono text-zinc-400 leading-relaxed">{srv.desc}</p>
               </div>
-              <div className="space-y-4">
-                <div>
-                  <span className="text-white block font-bold mb-1">CAMERA GEAR</span>
-                  <span className="text-zinc-600">(SONY / DJI)</span>
-                </div>
-                <div>
-                  <span className="text-white block font-bold mb-1">SOCIAL MEDIA</span>
-                  <span className="text-zinc-600">(TIKTOK / IG / YOUTUBE)</span>
-                </div>
-              </div>
-              <div className="space-y-4">
-                <div>
-                  <span className="text-white block font-bold mb-1">STORYTELLING</span>
-                  <span className="text-zinc-600">(VISUAL & EDITING)</span>
-                </div>
-                <div>
-                  <span className="text-white block font-bold mb-1">CREATIVE DIRECTION</span>
-                  <span className="text-zinc-600">(IDEAS → FINAL)</span>
-                </div>
+              <div className="pt-6 border-t border-zinc-900 space-y-2">
+                <span className="text-[9px] font-mono uppercase tracking-widest text-zinc-600 block">DELIVERABLES:</span>
+                {srv.deliverables.map((item, idx) => (
+                  <p key={idx} className="text-[10px] font-mono text-zinc-300 flex items-center gap-2">
+                    <span className="text-zinc-600">+</span> {item}
+                  </p>
+                ))}
               </div>
             </div>
-          </div>
+          ))}
+        </div>
+      </section>
 
+      {/* NOWA SEKCJA: TRUSTED BY */}
+      <section className="pt-12 border-t border-zinc-900">
+        <div className="flex items-center gap-6 mb-8 text-[10px] font-mono text-zinc-500 uppercase tracking-widest">
+          <span>COLLABORATIONS & TEAMS</span>
+          <div className="w-16 h-[1px] bg-zinc-800"></div>
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+          {aboutData.trustedBy.map((brand, idx) => (
+            <div
+              key={idx}
+              className="border border-zinc-900 p-6 flex items-center justify-center text-center font-mono text-[10px] tracking-widest text-zinc-500 uppercase hover:text-white hover:border-zinc-700 transition"
+            >
+              {brand}
+            </div>
+          ))}
         </div>
       </section>
 
       {/* DOLNA SEKCJA: PHILOSOPHY */}
-      <section className="pt-4 border-t border-zinc-900">
+      <section className="pt-12 border-t border-zinc-900">
         <div className="flex items-center gap-6 mb-8 text-[10px] font-mono text-zinc-600 uppercase tracking-widest">
           <span>MY PHILOSOPHY</span>
           <div className="w-16 h-[1px] bg-zinc-800"></div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center h-48">
-          
-          {/* Dynamiczne duże zdjęcie z cytatem po lewej */}
           <div className="lg:col-span-7 relative w-full h-full border border-zinc-800/50 bg-[#0a0a0a] rounded-sm overflow-hidden group">
             <img src={aboutData.philosophyImageLeft} alt="Stadium" className="w-full h-full object-cover grayscale contrast-125 group-hover:scale-105 group-hover:grayscale-0 transition duration-700" />
             <div className="absolute inset-0 bg-black/60 flex items-center p-12">
@@ -181,7 +174,6 @@ export default function AboutTab({ onGoToContact }: AboutTabProps) {
             </div>
           </div>
 
-          {/* Dynamiczny opis i podpis na środku */}
           <div className="lg:col-span-3 px-6 space-y-6">
             <p className="text-[10px] font-mono text-zinc-400 leading-relaxed">
               {aboutData.philosophyText}
@@ -191,14 +183,12 @@ export default function AboutTab({ onGoToContact }: AboutTabProps) {
             </div>
           </div>
 
-          {/* Dynamiczne małe zdjęcie detal na prawym skraju */}
           <div className="lg:col-span-2 relative w-full h-full border border-zinc-800/50 rounded-sm overflow-hidden">
             <img src={aboutData.philosophyImageRight} alt="Detail" className="w-full h-full object-cover grayscale contrast-125" />
             <div className="absolute bottom-4 right-4 text-right font-mono text-[8px] text-zinc-500 uppercase tracking-widest space-y-1">
               <p>SPORTS</p><p>CONTENT</p><p>CREATOR</p>
             </div>
           </div>
-
         </div>
       </section>
 

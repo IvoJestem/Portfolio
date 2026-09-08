@@ -1,14 +1,28 @@
-import { projects } from '../data/projects';
+import { useRef } from 'react';
+import { projects, type Project } from '../data/projects';
 
 interface HomeTabProps {
   onGoToWork: () => void;
+  onOpenProject: (p: Project) => void;
 }
 
-export default function HomeTab({ onGoToWork }: HomeTabProps) {
-  // Bierzemy pierwszy projekt jako główny (wyróżniony)
+export default function HomeTab({ onGoToWork, onOpenProject }: HomeTabProps) {
   const featuredProject = projects[0];
-  // Zostawiamy max 3 ostatnie projekty dla miniaturek z boku
   const thumbnails = projects.slice(0, 3);
+  const mainVideoRef = useRef<HTMLVideoElement | null>(null);
+
+  const handleMouseEnter = () => {
+    if (mainVideoRef.current) {
+      mainVideoRef.current.play().catch(() => {});
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (mainVideoRef.current) {
+      mainVideoRef.current.pause();
+      mainVideoRef.current.currentTime = 0;
+    }
+  };
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center h-full max-w-[1600px] mx-auto w-full animate-fadeIn">
@@ -37,14 +51,34 @@ export default function HomeTab({ onGoToWork }: HomeTabProps) {
         </div>
       </div>
 
-      {/* ŚRODKOWA KOLUMNA (Główny Kadr ściągany dynamicznie z projects.ts) */}
+      {/* ŚRODKOWA KOLUMNA: Hover video + Modal Trigger */}
       <div className="lg:col-span-4 flex justify-center h-full items-center">
-        <a href={featuredProject.igUrl} target="_blank" rel="noreferrer" className="relative w-full max-w-[380px] aspect-[9/16] rounded-xl overflow-hidden border border-zinc-800/50 bg-[#0a0a0a] group cursor-pointer block">
-          <img src={featuredProject.posterSrc} alt={featuredProject.title} className="w-full h-full object-cover grayscale contrast-125 group-hover:grayscale-0 transition duration-700" />
+        <div
+          onClick={() => onOpenProject(featuredProject)}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          className="relative w-full max-w-[380px] aspect-[9/16] rounded-xl overflow-hidden border border-zinc-800/50 bg-[#0a0a0a] group cursor-pointer block"
+        >
+          {/* Plakat statyczny */}
+          <img
+            src={featuredProject.posterSrc}
+            alt={featuredProject.title}
+            className="w-full h-full object-cover grayscale contrast-125 group-hover:opacity-0 transition-opacity duration-500"
+          />
+
+          {/* Wideo odpalane po najechaniu myszką */}
+          <video
+            ref={mainVideoRef}
+            src={featuredProject.videoSrc}
+            muted
+            loop
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+          />
+
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-black/30 pointer-events-none" />
           
           <div className="absolute top-6 left-6 flex items-center gap-2">
-            {/* Wektorowa ikona odtwarzania zamiast symbolu tekstowego */}
             <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 24 24">
               <polygon points="5 3 19 12 5 21 5 3" />
             </svg>
@@ -58,10 +92,10 @@ export default function HomeTab({ onGoToWork }: HomeTabProps) {
             </div>
             <span className="text-[10px] font-mono text-zinc-500">/ {featuredProject.num}</span>
           </div>
-        </a>
+        </div>
       </div>
 
-      {/* PRAWA KOLUMNA (Detale projektu i dynamiczne miniaturki) */}
+      {/* PRAWA KOLUMNA */}
       <div className="lg:col-span-4 flex flex-col justify-between h-full pl-8">
         <div className="space-y-6 pt-12">
           <div className="flex items-center gap-4 text-[10px] font-mono uppercase tracking-widest text-zinc-500">
@@ -77,20 +111,24 @@ export default function HomeTab({ onGoToWork }: HomeTabProps) {
             ))}
           </div>
           <div className="pt-4 flex items-center gap-3 text-[10px] font-mono uppercase tracking-widest text-zinc-300">
-             <a href={featuredProject.igUrl} target="_blank" rel="noreferrer" className="flex items-center gap-3 hover:text-white transition group">
-                <span>VIEW PROJECT</span><span className="transition-transform group-hover:translate-x-1">→</span>
-             </a>
+             <button onClick={() => onOpenProject(featuredProject)} className="flex items-center gap-3 hover:text-white transition group cursor-pointer">
+                <span>WATCH REEL</span><span className="transition-transform group-hover:translate-x-1">→</span>
+             </button>
           </div>
         </div>
 
-        {/* Dynamiczne Miniaturki generowane z tablicy thumbnails */}
+        {/* Dynamiczne Miniaturki */}
         <div className="flex gap-4 pt-16">
           {thumbnails.map((thumb) => (
-            <a href={thumb.igUrl} target="_blank" rel="noreferrer" key={thumb.id} className="relative flex-1 aspect-[2/3] border border-zinc-800/80 bg-zinc-900 overflow-hidden group cursor-pointer block">
+            <div
+              key={thumb.id}
+              onClick={() => onOpenProject(thumb)}
+              className="relative flex-1 aspect-[2/3] border border-zinc-800/80 bg-zinc-900 overflow-hidden group cursor-pointer block"
+            >
               <img src={thumb.posterSrc} alt={thumb.title} className="w-full h-full object-cover grayscale contrast-125 group-hover:scale-105 group-hover:grayscale-0 transition duration-500" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
               <span className="absolute bottom-3 left-3 text-[9px] font-mono text-zinc-400">/ {thumb.num}</span>
-            </a>
+            </div>
           ))}
         </div>
       </div>
