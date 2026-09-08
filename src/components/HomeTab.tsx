@@ -25,7 +25,7 @@ export default function HomeTab({ onGoToWork }: HomeTabProps) {
           I create cinematic videos, short-form content and visual stories that capture the real emotion of sport. From the pitch to the locker room — I turn moments into content.
         </p>
         <div className="pt-4 flex items-center gap-6">
-          <button onClick={onGoToWork} className="w-14 h-14 rounded-full border border-zinc-700 flex items-center justify-center hover:bg-white hover:text-black transition duration-300 group">
+          <button onClick={onGoToWork} className="w-14 h-14 rounded-full border border-zinc-700 flex items-center justify-center hover:bg-white hover:text-black transition duration-300 group cursor-pointer">
             <span className="text-sm transition-transform group-hover:translate-x-1">→</span>
           </button>
           <span className="text-[10px] font-mono tracking-widest uppercase text-zinc-400">VIEW MY WORK</span>
@@ -44,7 +44,10 @@ export default function HomeTab({ onGoToWork }: HomeTabProps) {
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-black/30 pointer-events-none" />
           
           <div className="absolute top-6 left-6 flex items-center gap-2">
-            <span className="text-white text-xs">▶</span>
+            {/* Wektorowa ikona odtwarzania zamiast symbolu tekstowego */}
+            <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 24 24">
+              <polygon points="5 3 19 12 5 21 5 3" />
+            </svg>
             <span className="text-[10px] font-mono text-white tracking-widest">{featuredProject.duration}</span>
           </div>
 
@@ -69,7 +72,6 @@ export default function HomeTab({ onGoToWork }: HomeTabProps) {
             <p className="text-[10px] font-mono text-zinc-400 uppercase tracking-widest">{featuredProject.subtitle}</p>
           </div>
           <div className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest space-y-1.5 pt-4">
-            {/* Split po ukośniku ze spacją żeby zrobić pionową listę */}
             {featuredProject.category.split(' / ').map((cat, idx) => (
               <p key={idx}>{cat}</p>
             ))}

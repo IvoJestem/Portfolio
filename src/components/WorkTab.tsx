@@ -5,8 +5,6 @@ export default function WorkTab() {
   const [activeFilter, setActiveFilter] = useState('ALL');
 
   // Automatycznie generujemy filtry na podstawie danych z projects.ts
-  // Ponieważ Twoje kategorie to np. "VIDEO PRODUCTION / SOCIAL MEDIA CONTENT",
-  // wyciągamy tylko pierwsze słowo jako główną kategorię do filtra.
   const categoryCounts = projects.reduce((acc, project) => {
     const mainCategory = project.category.split(' / ')[0];
     acc['ALL'] = (acc['ALL'] || 0) + 1;
@@ -95,9 +93,8 @@ export default function WorkTab() {
   );
 }
 
-// Subkomponent karty przesyłający dalej dane z Project
+// Subkomponent karty z wektorową ikoną odtwarzania SVG zamiast symbolu tekstowego
 function WorkCard({ className, project }: { className: string, project: Project }) {
-  // Wyciągamy pierwsze słowo z długiej kategorii by służyło jako tag na obrazku
   const shortTag = project.category.split(' / ')[0];
 
   return (
@@ -108,7 +105,10 @@ function WorkCard({ className, project }: { className: string, project: Project 
       <span className="absolute top-5 left-5 text-[9px] font-mono uppercase tracking-widest text-zinc-400">{shortTag}</span>
       
       <div className="absolute left-5 bottom-14 w-10 h-10 rounded-full border border-white/30 flex items-center justify-center bg-black/40 backdrop-blur-sm group-hover:scale-110 group-hover:bg-white group-hover:text-black transition duration-300">
-        <span className="text-[10px] pl-0.5">▶</span>
+        {/* Czysta, geometryczna ikona SVG */}
+        <svg className="w-3 h-3 fill-current pl-0.5" viewBox="0 0 24 24">
+          <polygon points="5 3 19 12 5 21 5 3" />
+        </svg>
       </div>
 
       <div className="absolute bottom-5 left-5 right-5 flex justify-between items-end">
