@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { contactData } from '../data/projects'; // Importujemy dane!
+import { contactData } from '../data/projects';
 
 export default function ContactTab() {
   const [sent, setSent] = useState(false);
@@ -10,8 +10,16 @@ export default function ContactTab() {
     setTimeout(() => setSent(false), 4000);
   };
 
+  // Funkcja płynnie przewijająca stronę do formularza na mniejszych ekranach
+  const scrollToForm = () => {
+    const formElement = document.getElementById('contact-form');
+    if (formElement) {
+      formElement.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
-    <div className="animate-fadeIn max-w-[1600px] mx-auto w-full h-full flex flex-col justify-center">
+    <div className="animate-fadeIn max-w-[1600px] mx-auto w-full h-full flex flex-col justify-center py-8">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
         
         {/* Kolumna 1: Tytuł */}
@@ -28,16 +36,27 @@ export default function ContactTab() {
           <p className="text-[11px] text-zinc-500 font-mono leading-relaxed pt-4">
             Have a project in mind, need a highlight video, or want to collaborate? I'm always open to new ideas, partnerships and exciting opportunities. Drop me a message — I'll get back to you as soon as possible.
           </p>
+          
+          {/* Interaktywny przycisk: klinięcie przenosi do formularza lub otwiera maila */}
           <div className="pt-8 flex items-center gap-6">
-            <div className="w-14 h-14 rounded-full border border-zinc-700 flex items-center justify-center text-zinc-300">
-              <span className="text-sm">→</span>
-            </div>
-            <span className="text-[10px] font-mono uppercase tracking-widest text-zinc-400">SEND A MESSAGE</span>
+            <button 
+              onClick={scrollToForm}
+              className="w-14 h-14 rounded-full border border-zinc-700 flex items-center justify-center text-zinc-300 hover:bg-white hover:text-black hover:border-white transition duration-300 group cursor-pointer"
+              title="Przejdź do formularza"
+            >
+              <span className="text-sm transition-transform group-hover:translate-y-1">↓</span>
+            </button>
+            <a 
+              href={`mailto:${contactData.email}`}
+              className="text-[10px] font-mono uppercase tracking-widest text-zinc-400 hover:text-white transition"
+            >
+              SEND AN EMAIL
+            </a>
           </div>
         </div>
 
-        {/* Kolumna 2: Czysty, minimalistyczny Formularz */}
-        <div className="lg:col-span-4">
+        {/* Kolumna 2: Czysty, minimalistyczny Formularz z ID do skrolowania */}
+        <div id="contact-form" className="lg:col-span-4 scroll-mt-12">
           <form onSubmit={handleSubmit} className="space-y-6 font-mono text-[10px]">
             <div className="space-y-2">
               <label className="text-zinc-500 uppercase tracking-widest block">NAME</label>
@@ -59,7 +78,7 @@ export default function ContactTab() {
               <label className="text-zinc-500 uppercase tracking-widest block">MESSAGE</label>
               <textarea rows={5} required placeholder="Tell me about your project..." className="w-full bg-transparent border border-zinc-800 rounded-sm px-4 py-3 text-zinc-200 placeholder-zinc-700 focus:outline-none focus:border-zinc-500 transition resize-none"></textarea>
             </div>
-            <button type="submit" className="w-full py-4 bg-white hover:bg-zinc-200 text-black font-black uppercase tracking-widest rounded-sm transition flex items-center justify-between px-6 mt-4">
+            <button type="submit" className="w-full py-4 bg-white hover:bg-zinc-200 text-black font-black uppercase tracking-widest rounded-sm transition flex items-center justify-between px-6 mt-4 cursor-pointer">
               <span>{sent ? "MESSAGE SENT" : "SEND MESSAGE"}</span>
               {!sent && <span>→</span>}
             </button>

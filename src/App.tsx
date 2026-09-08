@@ -35,7 +35,7 @@ const pageTransition = {
             SM<span className="text-zinc-500">.</span>
           </button>
 
-          <nav className="flex items-center gap-10 text-zinc-500">
+          <nav className="flex items-center gap-10 text-zinc-500 uppercase">
             {(['home', 'work', 'about', 'contact'] as Tab[]).map((tab) => (
               <button
                 key={tab}
