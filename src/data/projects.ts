@@ -61,30 +61,30 @@ export const aboutData: AboutData = {
     views: '100K+'
   },
   trustedBy: [
-    'ZAGŁĘBIE SOSNOWIEC',
-    'FREAK PARK',
-    'LOOPZ PARKL',
-    'PRO ATHLETES',
-    'HUDERLOK'
+    'TBD',
+    'TBD',
+    'TBD',
+    'TBD',
+    'TBD'
   ],
   services: [
     {
       num: '01',
-      title: 'MATCHDAY COVERAGE',
-      desc: 'Kompleksowa obsługa spotkań na żywo. Od rozgrzewki i szatni po kluczowe emocje boiskowe.',
-      deliverables: ['Real-time stories', 'Kinowy reel 24h po meczu', 'Kompilacje highlights']
+      title: 'TBD',
+      desc: 'TBD',
+      deliverables: ['TBD']
     },
     {
       num: '02',
-      title: 'REELS & TIKTOK PACKS',
-      desc: 'Cykliczna produkcja krótkich form pionowych nastawionych na zasięgi i zaangażowanie społeczności.',
-      deliverables: ['Pakiety 8-12 rolek/mc', 'Dobór dźwięków & trendów', 'Montaż dynamiczny z efektami']
+      title: 'TBD',
+      desc: 'TBD',
+      deliverables: ['TBD']
     },
     {
       num: '03',
-      title: 'COMMERCIAL & PROMO',
-      desc: 'Wizerunkowe klipy promocyjne dla marek sportowych, prezentacje nowych strojów oraz transferów.',
-      deliverables: ['Scenariusz i reżyseria', 'Color grading 4K', 'Wersje horyzontalne i pionowe']
+      title: 'TBD',
+      desc: 'TBD',
+      deliverables: ['TBD']
     }
   ]
 };

@@ -47,7 +47,7 @@ export default function ContactTab() {
               <span className="text-sm transition-transform group-hover:translate-y-1">↓</span>
             </button>
             <a 
-              href={`mailto:${contactData.email}`}
+            //  href={`mailto:${contactData.email}`}
               className="text-[10px] font-mono uppercase tracking-widest text-zinc-400 hover:text-white transition"
             >
               SEND AN EMAIL
@@ -91,7 +91,7 @@ export default function ContactTab() {
             <span className="text-zinc-600 uppercase tracking-widest block border-b border-zinc-800 pb-2">CONTACT INFO</span>
             <div className="space-y-1">
               <span className="uppercase tracking-widest text-zinc-500 block">EMAIL</span>
-              <a href={`mailto:${contactData.email}`} className="text-zinc-200 hover:text-white transition">
+             // <a href={`mailto:${contactData.email}`} className="text-zinc-200 hover:text-white transition">
                 {contactData.email}
               </a>
             </div>
